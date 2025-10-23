@@ -1,0 +1,36 @@
+<h1 class="text-3xl font-extrabold text-yellow-400 mb-8 flex items-center gap-2">
+  🎞️ Catálogo de Filmes
+</h1>
+
+<% if user_signed_in? %>
+  <%= link_to "➕ Novo Filme",
+              new_movie_path,
+              class: "inline-block mb-8 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-5 rounded-lg shadow transition" %>
+<% end %>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @movies.each do |movie| %>
+    <div class="bg-gray-800 hover:bg-gray-700 transition border border-gray-700 rounded-xl p-5 shadow-lg">
+      <h3 class="text-lg font-bold text-white mb-1">
+        <%= link_to movie.title, movie_path(movie), class: "hover:text-yellow-400 transition" %>
+      </h3>
+
+      <p class="text-sm text-gray-400">
+        <strong>Ano:</strong> <%= movie.year %> |
+        <strong>Duração:</strong> <%= movie.duration %> min
+      </p>
+      <p class="text-sm text-gray-400 mb-2">
+        <strong>Diretor:</strong> <%= movie.director %>
+      </p>
+
+      <p class="text-gray-300 text-sm leading-relaxed">
+        <%= truncate(movie.synopsis, length: 120) %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Paginação -->
+<div class="mt-10 flex justify-center space-x-2">
+  <%= paginate @movies %>
+</div>

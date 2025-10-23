@@ -1,0 +1,49 @@
+<div class="movie-details">
+  <h1><%= @movie.title %></h1>
+
+  <p><strong>Sinopse:</strong> <%= @movie.synopsis %></p>
+  <p><strong>Ano:</strong> <%= @movie.year %></p>
+  <p><strong>Duração:</strong> <%= @movie.duration %> min</p>
+  <p><strong>Diretor:</strong> <%= @movie.director %></p>
+
+  <% if user_signed_in? && @movie.user_id == current_user.id %>
+    <div class="actions">
+      <%= link_to "✏️ Editar", edit_movie_path(@movie), class: "btn-edit bg-green-500 text-green-900 font-semibold " %>
+<%= form_with url: movie_path(@movie), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir este filme?" }, style: "display:inline" do %>
+  <%= submit_tag "🗑️ Excluir", class: "btn-delete text-red-600 font-semibold" %>
+<% end %>
+    </div>
+  <% end %>
+</div>
+
+<hr>
+
+<div class="comments-section">
+  <h3>💬 Comentários</h3>
+
+  <%= form_with model: [@movie, @comment], local: true, class: "comment-form" do |f| %>
+    <% unless user_signed_in? %>
+      <div class="form-group">
+        <%= f.label :name, "Seu nome" %>
+        <%= f.text_field :name, class: "input" %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :content, "Comentário" %>
+      <%= f.text_area :content, rows: 3, class: "textarea" %>
+    </div>
+
+    <%= f.submit "Comentar", class: "btn-submit" %>
+  <% end %>
+
+  <ul class="comment-list">
+    <% @comments.each do |c| %>
+      <li class="comment-item">
+       <strong><%= c.user&.name || c.name || "Anônimo" %>:</strong>
+      <%= c.content %>
+        <small class="timestamp">(<%= time_ago_in_words(c.created_at) %> atrás)</small>
+      </li>
+    <% end %>
+  </ul>
+</div>

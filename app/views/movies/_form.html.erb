@@ -1,0 +1,39 @@
+<%= form_with(model: movie, local: true, data: { turbo: false }) do |f| %>
+  <% if movie.errors.any? %>
+    <div class="form-errors" style="background:#fee; border:1px solid #fbb; padding:10px; border-radius:6px; margin-bottom:12px;">
+      <strong><%= pluralize(movie.errors.count, "erro") %> impediram salvar:</strong>
+      <ul style="margin:8px 0 0 18px;">
+        <% movie.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, "Título" %>
+    <%= f.text_field :title, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :synopsis, "Sinopse" %>
+    <%= f.text_area :synopsis %>
+  </div>
+
+  <div>
+    <%= f.label :year, "Ano de lançamento" %>
+    <%= f.number_field :year, required: true, min: 1888 %>
+  </div>
+
+  <div>
+    <%= f.label :duration, "Duração (min)" %>
+    <%= f.number_field :duration, required: true, min: 1 %>
+  </div>
+
+  <div>
+    <%= f.label :director, "Diretor" %>
+    <%= f.text_field :director, required: true %>
+  </div>
+
+  <%= f.submit "Salvar Filme" %>
+<% end %>

@@ -1,0 +1,40 @@
+<% if paginator.present? %>
+  <nav class="flex justify-center mt-6">
+    <ul class="inline-flex items-center -space-x-px text-sm">
+      <% if paginator.prev_page %>
+        <li>
+          <%= link_to "← Anterior", url_for(page: paginator.prev_page),
+              class: "px-3 py-2 ml-0 leading-tight text-gray-700 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-900" %>
+        </li>
+      <% end %>
+
+      <% paginator.each_page do |page| %>
+        <% if page %>
+          <% if page == paginator.current_page %>
+            <li>
+              <span class="px-3 py-2 text-white bg-blue-600 border border-blue-600 cursor-default rounded">
+                <%= page %>
+              </span>
+            </li>
+          <% else %>
+            <li>
+              <%= link_to page, url_for(page: page),
+                  class: "px-3 py-2 leading-tight text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900" %>
+            </li>
+          <% end %>
+        <% else %>
+          <li>
+            <span class="px-3 py-2 text-gray-400 bg-white border border-gray-300">…</span>
+          </li>
+        <% end %>
+      <% end %>
+
+      <% if paginator.next_page %>
+        <li>
+          <%= link_to "Próxima →", url_for(page: paginator.next_page),
+              class: "px-3 py-2 leading-tight text-gray-700 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-900" %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>
