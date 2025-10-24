@@ -2,7 +2,12 @@ services:
   - type: web
     name: projeto-maino
     env: ruby
-    buildCommand: bundle install && bundle exec rake assets:precompile db:migrate
+    buildCommand: |
+      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      apt-get install -y nodejs
+      npm install -g yarn
+      bundle install
+      bundle exec rake assets:precompile db:migrate
     startCommand: bundle exec rails server -p $PORT
     envVars:
       - key: RAILS_MASTER_KEY
