@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: movie-catalog
+    env: ruby
+    buildCommand: bundle install && bundle exec rake assets:precompile db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: BUNDLER_VERSION
+        value: 2.5.9
+
+databases:
+  - name: movie_catalog_db
