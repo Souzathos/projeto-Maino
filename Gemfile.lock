@@ -443,6 +443,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   brakeman
+  bundler (~> 2.5.9)
   bundler-audit
   capybara
   debug
@@ -470,4 +471,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   2.5.11
+   2.5.23
