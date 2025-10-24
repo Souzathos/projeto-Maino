@@ -1,22 +1,14 @@
 services:
   - type: web
-    name: projeto-maino
+    name: projeto-Maino
     env: ruby
+    plan: free
     buildCommand: |
-      apt-get update -y
-      apt-get install -y curl gnupg
-      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-      apt-get install -y nodejs
-      npm install -g yarn
       gem install bundler -v 2.5.11
-      bundle install
-      yarn install --check-files
-      bundle exec rake assets:precompile db:migrate
-    startCommand: bundle exec rails server -p $PORT
+      bundle _2.5.11_ install
+      bundle exec rake assets:precompile
+      bundle exec rake db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: RAILS_MASTER_KEY
         sync: false
-      - key: BUNDLER_VERSION
-        value: 2.5.11
-      - key: RAILS_ENV
-        value: production
