@@ -85,11 +85,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary: &primary_production
-    <<: *default
-    database: movie_catalog_production
-    username: movie_catalog
-    password: <%= ENV["MOVIE_CATALOG_DATABASE_PASSWORD"] %>
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
+  pool: 5
   cache:
     <<: *primary_production
     database: movie_catalog_production_cache

@@ -9,9 +9,9 @@
   <% if user_signed_in? && @movie.user_id == current_user.id %>
     <div class="actions">
       <%= link_to "✏️ Editar", edit_movie_path(@movie), class: "btn-edit bg-green-500 text-green-900 font-semibold " %>
-<%= form_with url: movie_path(@movie), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir este filme?" }, style: "display:inline" do %>
-  <%= submit_tag "🗑️ Excluir", class: "btn-delete text-red-600 font-semibold" %>
-<% end %>
+      <%= form_with url: movie_path(@movie), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir este filme?" }, style: "display:inline" do %>
+        <%= submit_tag "🗑️ Excluir", class: "btn-delete text-red-600 font-semibold" %>
+      <% end %>
     </div>
   <% end %>
 </div>
