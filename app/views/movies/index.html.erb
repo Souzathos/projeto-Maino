@@ -4,33 +4,62 @@
 
 <% if user_signed_in? %>
   <%= link_to "➕ Novo Filme",
-              new_movie_path,
-              class: "inline-block mb-8 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-5 rounded-lg shadow transition" %>
+    new_movie_path,
+    class: "inline-block mb-8 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-5 rounded-lg shadow transition" %>
 <% end %>
 
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+<% if @movies.empty? %>
+  <p class="text-center text-gray-400 mt-6">Nenhum filme encontrado 😢</p>
+<% end %>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
   <% @movies.each do |movie| %>
-    <div class="bg-gray-800 hover:bg-gray-700 transition border border-gray-700 rounded-xl p-5 shadow-lg">
+  
+    <div class="bg-gray-800 hover:bg-gray-700 transition border border-gray-700 rounded-xl p-5 shadow-lg flex flex-col">
+
+      <% if movie.poster.attached? %>
+        <%= image_tag movie.poster,
+            class: "w-full h-44 object-cover rounded-md mb-3 shadow-md" %>
+      <% else %>
+        <p class="text-xs text-gray-500 italic mb-2">Sem imagem</p>
+      <% end %>
+
       <h3 class="text-lg font-bold text-white mb-1">
         <%= link_to movie.title, movie_path(movie), class: "hover:text-yellow-400 transition" %>
       </h3>
 
-      <p class="text-sm text-gray-400">
+      <p class="text-sm text-gray-400 mb-1">
         <strong>Ano:</strong> <%= movie.year %> |
         <strong>Duração:</strong> <%= movie.duration %> min
       </p>
-      <p class="text-sm text-gray-400 mb-2">
+
+      <p class="text-sm text-gray-400 mb-1">
         <strong>Diretor:</strong> <%= movie.director %>
       </p>
 
-      <p class="text-gray-300 text-sm leading-relaxed">
+      <p class="text-sm text-gray-400 leading-relaxed mb-2">
         <%= truncate(movie.synopsis, length: 120) %>
       </p>
-    </div>
-  <% end %>
-</div>
 
-<!-- Paginação -->
-<div class="mt-10 flex justify-center space-x-2">
+      <p class="text-sm text-gray-400 mb-3">
+        <strong>Categorias:</strong>
+        <% if movie.categories.any? %>
+          <% movie.categories.each do |c| %>
+            <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded-md mr-1"><%= c.name %></span>
+          <% end %>
+        <% else %>
+          Nenhuma
+        <% end %>
+      </p>
+
+      <%= link_to "Ver Detalhes", movie_path(movie),
+          class: "mt-auto bg-yellow-600 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md text-center transition" %>
+
+    </div>
+
+  <% end %>
+</div> <!-- ✅ AQUI fecha corretamente o grid -->
+
+<div class="pagination mt-10">
   <%= paginate @movies %>
 </div>

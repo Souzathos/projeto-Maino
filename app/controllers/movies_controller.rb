@@ -4,7 +4,32 @@ class MoviesController < ApplicationController
   before_action :authorize_owner!, only: %i[edit update destroy]
 
   def index
-    @movies = Movie.newest.page(params[:page]).per(6)
+    @categories = Category.all
+    @movies = Movie.order(created_at: :desc)
+
+    # 🔍 Busca geral (título, diretor ou ano)
+    if params[:q].present?
+      search = "%#{params[:q]}%"
+      @movies = @movies.where(
+        "title ILIKE ? OR director ILIKE ? OR CAST(year AS TEXT) ILIKE ?",
+        search, search, search
+      )
+    end
+
+    # 🎯 Filtro por categoria
+    if params[:category_id].present?
+      @movies = @movies.joins(:categories).where(categories: { id: params[:category_id] })
+    end
+
+    @movies = @movies.page(params[:page]).per(6)
+  end
+
+  def save_categories(names)
+    return if names.blank?
+
+    self.categories = names.split(",").map do |name|
+      Category.find_or_create_by(name: name.strip.titleize)
+    end
   end
 
   def show
@@ -17,23 +42,28 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = current_user.movies.new(movie_params)
+    @movie = current_user.movies.build(movie_params)
+
     if @movie.save
-      redirect_to @movie, notice: "Filme criado com sucesso."
+      @movie.save_categories(movie_params[:category_names])
+      redirect_to @movie, notice: "Filme criado com sucesso!"
     else
-      render :new, status: :unprocessable_entity
+      load_categories
+      render :new
     end
   end
-
-  def edit; end
 
   def update
     if @movie.update(movie_params)
-      redirect_to @movie, notice: "Filme atualizado."
+      @movie.save_categories(movie_params[:category_names])
+      redirect_to @movie, notice: "Filme atualizado!"
     else
-      render :edit, status: :unprocessable_entity
+      load_categories
+      render :edit
     end
   end
+
+
 
   def destroy
     @movie.destroy
@@ -50,6 +80,9 @@ class MoviesController < ApplicationController
 end
 
   def movie_params
-    params.require(:movie).permit(:title, :synopsis, :year, :duration, :director)
+    params.require(:movie).permit(:title, :synopsis, :year, :duration, :director, :poster, :category_names)
   end
+
+
+
 end

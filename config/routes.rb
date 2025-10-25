@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get "categories/index"
+  get "categories/new"
+  get "categories/create"
+  get "categories/edit"
+  get "categories/update"
+  get "categories/destroy"
   devise_for :users
 
   resources :movies do

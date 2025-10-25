@@ -1,2 +1,68 @@
-<h1>Editar Filme</h1>
-<%= render "form", movie: @movie %>
+<div class="max-w-3xl mx-auto mt-12 bg-gray-900 border border-gray-800 p-10 rounded-3xl shadow-2xl">
+  <h1 class="text-3xl font-bold text-yellow-400 mb-10 flex items-center gap-3">
+    ✏️ Editar Filme
+  </h1>
+
+  <%= form_with(model: @movie, local: true, class: "space-y-8") do |form| %>
+
+    <!-- Campo Título -->
+    <div class="flex flex-col gap-2">
+      <%= form.label :title, "Título", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.text_field :title, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+    </div>
+
+    <!-- Campo Sinopse -->
+    <div class="flex flex-col gap-2">
+      <%= form.label :synopsis, "Sinopse", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.text_area :synopsis, rows: 4, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+    </div>
+
+    <!-- Linha com Ano, Duração e Diretor -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="flex flex-col gap-2">
+        <%= form.label :year, "Ano de lançamento", class: "text-sm font-semibold text-gray-300" %>
+        <%= form.number_field :year, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <%= form.label :duration, "Duração (min)", class: "text-sm font-semibold text-gray-300" %>
+        <%= form.number_field :duration, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <%= form.label :director, "Diretor", class: "text-sm font-semibold text-gray-300" %>
+        <%= form.text_field :director, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      </div>
+    </div>
+
+    <!-- Categorias -->
+    <div class="flex flex-col gap-2">
+      <%= form.label :category_names, "Categorias (separe por vírgula)", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.text_field :category_names, value: @movie.categories.map(&:name).join(", "),
+          class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+    </div>
+
+    <!-- Poster -->
+    <div class="flex flex-col gap-3">
+      <%= form.label :poster, "Poster do Filme", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.file_field :poster, accept: "image/*",
+          class: "text-white bg-gray-800 px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" %>
+
+      <% if @movie.poster.attached? %>
+        <p class="text-sm text-gray-400">Poster atual:</p>
+        <%= image_tag @movie.poster, class: "w-40 rounded-lg shadow-md mb-2" %>
+      <% end %>
+    </div>
+
+    <!-- Botões -->
+    <div class="flex justify-between pt-4">
+      <%= link_to "Cancelar",
+          movie_path(@movie),
+          class: "bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition" %>
+
+      <%= form.submit "Salvar Alterações",
+          class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold py-3 px-6 rounded-lg shadow-md transition" %>
+    </div>
+
+  <% end %>
+</div>

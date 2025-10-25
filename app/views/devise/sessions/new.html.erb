@@ -1,26 +1,39 @@
-<h2>Log in</h2>
+<div class="max-w-lg mx-auto bg-gray-900 p-8 mt-20 rounded-lg shadow-lg border border-gray-700">
+  <h2 class="text-2xl font-bold text-white mb-6 text-center">Entrar 🔐</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="mb-5">
+      <%= f.label :email, "Email", class: "text-gray-300 font-medium" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email",
+            class: "mt-2 w-full bg-gray-800 text-white border border-gray-700 rounded p-3 focus:ring focus:ring-yellow-500" %>
     </div>
+
+    <div class="mb-3 py-2">
+      <%= f.label :password, "Senha", class: "text-gray-300 font-medium" %>
+      <%= f.password_field :password, autocomplete: "current-password",
+            class: "mt-2 w-full bg-gray-800 text-white border border-gray-700 rounded p-3 focus:ring focus:ring-yellow-500" %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="flex items-center space-x-2 mb-5 text-gray-300">
+        <%= f.check_box :remember_me, class: "rounded text-yellow-500" %>
+        <%= f.label :remember_me, "Lembrar de mim" %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Entrar",
+          class: "w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold p-3 rounded-lg transition cursor-pointer" %>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+  <div class="text-center mt-6 space-y-2">
+    <%= link_to "Esqueci minha senha", new_password_path(resource_name),
+          class: "text-yellow-400 hover:text-yellow-300 text-sm font-medium" %>
 
-<%= render "devise/shared/links" %>
+    <p class="text-gray-400 text-sm">
+      Não tem conta?
+      <%= link_to "Cadastrar", new_registration_path(resource_name),
+            class: "text-yellow-400 hover:text-yellow-300 font-semibold" %>
+    </p>
+  </div>
+</div>

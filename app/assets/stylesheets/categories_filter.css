@@ -1,0 +1,40 @@
+/* Estilo do filtro de categorias */
+.category-select {
+  background-color: #1a2534;
+  color: #eaeaea;
+  border: 2px solid #31475e;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+.category-select:hover,
+.category-select:focus {
+  background-color: #233445;
+  border-color: #ffc400;
+  outline: none;
+}
+
+/* Opções internas */
+.category-select option {
+  background-color: #1a2534;
+  color: #fff;
+}
+
+/* Botão filtrar */
+.btn-filter {
+  background: #ffc400;
+  color: #2a2a2a;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-filter:hover {
+  background: #e0ad00;
+}

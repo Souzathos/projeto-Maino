@@ -1,0 +1,44 @@
+/* =========================
+   Select dark theme
+   ========================= */
+.select-dark {
+  color: #ffffff !important;           /* texto do select quando fechado */
+  background-color: #1f2937 !important; /* bg-gray-800 */
+  border-color: #374151 !important;     /* border-gray-700 */
+  border-radius: 0.375rem;              /* rounded-md */
+}
+
+/* Foco do select (a borda amarela que você já usa) */
+.select-dark:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.9) !important; /* ring-yellow-400 */
+}
+
+/* Quando o dropdown ABRE, o que aparece são os <option>.
+   Aqui deixamos as opções com fundo branco e texto preto
+   pra ficar legível independente do tema. */
+.select-dark option {
+  color: #111827 !important;      /* text-gray-900 */
+  background: #ffffff !important; /* branco */
+}
+
+/* A opção destacada/selecionada dentro da lista aberta */
+.select-dark option:checked,
+.select-dark option:hover,
+.select-dark option:focus {
+  background: #e5e7eb !important; /* gray-200 */
+  color: #111827 !important;
+}
+
+/* Alguns WebKits emulam dark-mode no popup; isso ajuda a forçar claro */
+.select-dark {
+  color-scheme: dark;
+}
+
+/* Safari/iOS costuma ignorar parte do estilo dos <option>.
+   Esse hack força pelo menos a cor do texto. */
+@supports (-webkit-touch-callout: none) {
+  .select-dark option {
+    color: #111827 !important;
+  }
+}

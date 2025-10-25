@@ -8,15 +8,59 @@
 
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "pagination", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col font-sans">
+
     <!-- NAVBAR -->
     <nav class="bg-gray-900 border-b border-gray-800 text-white py-4 px-8 shadow flex justify-between items-center">
+
       <div>
         <%= link_to "🎬 Movie Catalog", root_path, class: "text-2xl font-semibold hover:text-yellow-400 transition" %>
       </div>
+
+      <%= form_with url: movies_path, method: :get, local: true,
+      class: "flex flex-wrap items-center justify-center gap-6 mb-10" do %>
+
+       <div class="flex items-center justify-center gap-4 mb-6">
+
+      <!-- Grupo: busca por título, diretor ou ano -->
+      <div class="inline-flex items-center gap-2">
+          <%= text_field_tag :q, params[:q],
+            placeholder: "Buscar filmes, diretor, ano de lançamento...",
+            class: "px-5 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400
+                    border border-gray-700 w-64" %>
+
+          <%= button_tag "Buscar",
+            type: :submit, name: nil,
+            class: "px-5 py-2 rounded-lg bg-yellow-600 text-gray-900 font-bold" %>
+        </div>
+
+        <!-- Grupo: filtro por categoria -->
+        <div class="inline-flex items-center gap-2">
+          <%= select_tag :category_id,
+            options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
+            include_blank: "Todas categorias",
+            class: "px-4 py-2 rounded-lg bg-gray-800 text-white
+                    border border-gray-700 focus:outline-none focus:ring-2
+                    focus:ring-yellow-400 w-56" %>
+
+          <%= button_tag "Filtrar",
+            type: :submit, name: nil,
+            class: "px-5 py-2 rounded-lg bg-blue-600 text-white font-bold
+                    hover:bg-blue-500 transition" %>
+
+          <%= link_to "Limpar",
+            movies_path,
+            class: "px-5 py-2 rounded-lg bg-red-600 text-white font-bold
+                    hover:bg-red-500 transition" %>
+        </div>
+      </div>
+
+      <% end %>
 
       <div class="space-x-6 flex items-center">
         <% if user_signed_in? %>

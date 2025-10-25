@@ -1,8 +1,9 @@
-<%= form_with(model: movie, local: true, data: { turbo: false }) do |f| %>
+<%= form_with(model: movie, local: true, multipart: true, data: { turbo: false }) do |f| %>
+  
   <% if movie.errors.any? %>
-    <div class="form-errors" style="background:#fee; border:1px solid #fbb; padding:10px; border-radius:6px; margin-bottom:12px;">
+    <div class="form-errors">
       <strong><%= pluralize(movie.errors.count, "erro") %> impediram salvar:</strong>
-      <ul style="margin:8px 0 0 18px;">
+      <ul>
         <% movie.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
@@ -33,6 +34,17 @@
   <div>
     <%= f.label :director, "Diretor" %>
     <%= f.text_field :director, required: true %>
+  </div>
+
+  <div class="form-group mt-4">
+    <%= f.label :category_names, "Categorias (separe por vírgula)", class: "text-gray-300 font-semibold" %>
+    <%= f.text_field :category_names, value: @movie.categories.map(&:name).join(", "), class: "input" %>
+  </div>
+
+  <div class="form-group mb-4">
+    <%= f.label :poster, "Poster do Filme" %><br>
+    <%= f.file_field :poster,
+      class: "mt-1 px-4 py-2 rounded bg-gray-800 text-white border border-gray-700" %>
   </div>
 
   <%= f.submit "Salvar Filme" %>
