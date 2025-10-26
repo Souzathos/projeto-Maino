@@ -1,7 +1,7 @@
 databases:
- - name: movieCatalog
-  database: movieCatalog
-  user: Souzathos
+  - name: movieCatalog
+    database: movieCatalog
+    user: Souzathos
 
 
 services: 
