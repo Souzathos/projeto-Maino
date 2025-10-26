@@ -1,14 +1,21 @@
-services:
+database:
+ - name: movie_catalog_production
+  database: movie_catalog_production
+  user: movie_catalog
+
+
+services: 
   - type: web
-    name: projeto-Maino
+    name: movie-catalog-web
     env: ruby
-    plan: free
-    buildCommand: |
-      gem install bundler -v 2.5.11
-      bundle _2.5.11_ install
-      bundle exec rake assets:precompile
-      bundle exec rake db:migrate
+    plan: starter
+    buildCommand: bash ./bin/render-build.sh
     startCommand: bundle exec puma -C config/puma.rb
     envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: movie_catalog_production
+          property: connectionString
+        value: production
       - key: RAILS_MASTER_KEY
         sync: false
