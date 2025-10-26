@@ -1,6 +1,6 @@
 databases:
-- name: movieCatalog             # Nome da base de dados (deve ser único e consistente)
-  user: Souzathos
+- name: movieCatalog             # Nome do recurso E nome da database (Postgres)
+# A chave 'user' foi removida. O Render irá gerar um usuário seguro.
 
 services:
 - type: web
@@ -11,11 +11,10 @@ services:
   startCommand: bundle exec puma -C config/puma.rb
   envVars:
   - key: DATABASE_URL
-    # Esta seção busca a string de conexão da base de dados definida acima.
     fromDatabase:
-      name: movieCatalog         # CORRIGIDO: O nome da base de dados referenciado aqui
-      property: connectionString # deve ser 'movieCatalog' (com 'C' maiúsculo) para corresponder ao nome definido na seção 'databases'.
+      name: movieCatalog         # Referencia o recurso de base de dados acima
+      property: connectionString
 
   - key: RAILS_MASTER_KEY
-    value: production
-    sync: false                  # Ajustado para que esta propriedade pertença à envVar 'RAILS_MASTER_KEY'.
+    # Chave 'value' removida. Isso força você a definir o valor no Dashboard do Render como um Segredo.
+    sync: false                  # Instrução para NÃO sobrescrever o valor no Dashboard.
