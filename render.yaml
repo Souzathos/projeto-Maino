@@ -1,4 +1,4 @@
-database:
+databases:
  - name: movieCatalog
   database: movieCatalog
   user: Souzathos
