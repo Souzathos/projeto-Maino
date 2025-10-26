@@ -1,21 +1,21 @@
 databases:
-  - name: movieCatalog
-    database: movieCatalog
-    user: Souzathos
+- name: movieCatalog             # Nome da base de dados (deve ser único e consistente)
+  user: Souzathos
 
+services:
+- type: web
+  name: movie-catalog-web
+  env: ruby
+  plan: starter
+  buildCommand: bash ./bin/render-build.sh
+  startCommand: bundle exec puma -C config/puma.rb
+  envVars:
+  - key: DATABASE_URL
+    # Esta seção busca a string de conexão da base de dados definida acima.
+    fromDatabase:
+      name: movieCatalog         # CORRIGIDO: O nome da base de dados referenciado aqui
+      property: connectionString # deve ser 'movieCatalog' (com 'C' maiúsculo) para corresponder ao nome definido na seção 'databases'.
 
-services: 
-  - type: web
-    name: movie-catalog-web
-    env: ruby
-    plan: starter
-    buildCommand: bash ./bin/render-build.sh
-    startCommand: bundle exec puma -C config/puma.rb
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: movieCatalog
-          property: connectionString
-        value: production
-      - key: RAILS_MASTER_KEY
-        sync: false
+  - key: RAILS_MASTER_KEY
+    value: production
+    sync: false                  # Ajustado para que esta propriedade pertença à envVar 'RAILS_MASTER_KEY'.
