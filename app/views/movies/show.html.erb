@@ -3,80 +3,139 @@
   <!-- Poster -->
   <div class="flex justify-center items-start w-full lg:w-1/3">
     <% if @movie.poster.attached? %>
-      <%= image_tag @movie.poster, class: "w-full max-w-xs rounded-lg shadow-lg object-cover" %>
+      <%= image_tag @movie.poster,
+          class: "w-full max-w-xs rounded-lg shadow-lg object-cover" %>
     <% else %>
-      <div class="w-full max-w-xs h-64 bg-gray-700 rounded-lg flex items-center justify-center text-gray-400">
-        Sem imagem
-      </div>
+      <%= image_tag "placeholder.png",
+          class: "w-full max-w-xs h-72 rounded-lg shadow-lg object-cover opacity-70" %>
     <% end %>
   </div>
 
-  <!-- Informações -->
+  <!-- Informações do Filme -->
   <div class="w-full lg:w-2/3">
     <h1 class="text-4xl font-bold text-yellow-400 mb-4"><%= @movie.title %></h1>
 
-    <p class="text-gray-300 mb-3"><strong>Sinopse:</strong> <%= @movie.synopsis %></p>
-    <p class="text-gray-300 mb-1"><strong>Ano:</strong> <%= @movie.year %></p>
-    <p class="text-gray-300 mb-1"><strong>Duração:</strong> <%= @movie.duration %> min</p>
-    <p class="text-gray-300 mb-3"><strong>Diretor:</strong> <%= @movie.director %></p>
+    <!-- Avaliação -->
+    <div class="mt-4">
+      <div class="flex items-center gap-2 mb-1">
 
-    <p class="text-gray-300 mb-4">
-      <strong>Categorias:</strong>
-      <% if @movie.categories.any? %>
-        <% @movie.categories.each do |c| %>
-          <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded-md mr-1"><%= c.name %></span>
-        <% end %>
+        <% avg = @movie.reviews.average(:rating).to_f.round(1) rescue 0 %>
+
+        <span class="text-yellow-400 text-xl">
+          <%= avg > 0 ? "#{avg} ★" : "Sem avaliações ainda" %>
+        </span>
+
+      </div>
+
+      <% if user_signed_in? %>
+        <h3 class="text-gray-300 text-sm mb-1">Avalie este filme:</h3>
+        <div class="flex items-center gap-2">
+          <div class="stars flex gap-1 text-2xl cursor-pointer select-none">
+            <% 5.times do |i| %>
+              <% filled = (i + 1) <= avg %>
+              <span class="star <%= filled ? 'text-yellow-400' : 'text-gray-600' %> hover:text-yellow-400 transition" data-value="<%= i + 1 %>">★</span>
+            <% end %>
+          </div>
+
+          <%= form_with(model: [@movie, Review.new], id: "rating_form", local: true) do |form| %>
+            <%= form.hidden_field :rating, id: "rating_input" %>
+          <% end %>
+        </div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const stars = document.querySelectorAll(".star");
+            const ratingInput = document.getElementById("rating_input");
+            const ratingForm = document.getElementById("rating_form");
+
+            stars.forEach(star => {
+              star.addEventListener("click", () => {
+                const rating = star.getAttribute("data-value");
+                ratingInput.value = rating;
+
+                stars.forEach(s => s.classList.remove("text-yellow-400"));
+                stars.forEach(s => s.classList.add("text-gray-600"));
+
+                star.classList.add("text-yellow-400");
+                let prev = star.previousElementSibling;
+                while (prev) {
+                  prev.classList.add("text-yellow-400");
+                  prev.classList.remove("text-gray-600");
+                  prev = prev.previousElementSibling;
+                }
+
+                ratingForm.submit();
+              });
+            });
+          });
+        </script>
       <% else %>
-        Nenhuma categoria definida
+        <p class="text-gray-400 text-sm">Faça login para avaliar.</p>
       <% end %>
+    </div>
+
+    <!-- Infos -->
+    <p class="text-gray-300 mt-4"><strong>Sinopse:</strong> <%= @movie.synopsis %></p>
+    <p class="text-gray-300"><strong>Ano:</strong> <%= @movie.year %></p>
+    <p class="text-gray-300"><strong>Duração:</strong> <%= @movie.duration %> min</p>
+    <p class="text-gray-300"><strong>Diretor:</strong> <%= @movie.director %></p>
+
+    <p class="text-gray-300 mt-3">
+      <strong>Categorias:</strong>
+      <% @movie.categories.any? ? @movie.categories.each do |c| %>
+        <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded-md mr-1"><%= c.name %></span>
+      <% end : "Nenhuma" %>
+    </p>
+
+    <p class="text-gray-300 mt-2">
+      <strong>Tags:</strong>
+      <% @movie.tags.any? ? @movie.tags.each do |t| %>
+        <span class="bg-orange-600 text-white text-xs px-2 py-1 rounded-md mr-1">#<%= t.name %></span>
+      <% end : "Nenhuma tag definida" %>
     </p>
 
     <% if user_signed_in? && current_user == @movie.user %>
       <div class="flex gap-3 mt-6">
         <%= link_to "✏️ Editar", edit_movie_path(@movie),
             class: "bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-md font-bold transition" %>
-
         <%= button_to "🗑️ Excluir", @movie, method: :delete,
             data: { confirm: "Tem certeza que deseja excluir este filme?" },
-            class: "bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md font-bold text-white transition" %>
+            class: "bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md font-bold transition text-white" %>
       </div>
     <% end %>
   </div>
 </div>
 
+
 <!-- Comentários -->
-<div class="mt-10 border-t border-gray-800 pt-6">
-  <h2 class="text-xl font-semibold text-gray-200 mb-4">💬 Comentários</h2>
+<div class="mt-12 border-t border-gray-700 pt-6">
+  <h2 class="text-xl font-semibold text-gray-200 mb-4 flex items-center gap-2">💬 Comentários</h2>
 
-  <% if user_signed_in? %>
-    <%= form_with(model: [@movie, Comment.new], local: true, class: "mb-6") do |form| %>
-      <div class="flex flex-col gap-2">
-        <%= form.text_area :content, rows: 3,
-              placeholder: "Escreva um comentário...",
-              class: "w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white" %>
-
-        <%= form.submit "Comentar",
-              class: "bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded-md transition self-start" %>
-      </div>
+  <%= form_with(model: [@movie, Comment.new], local: true, class: "mb-6 flex gap-2 w-full") do |form| %>
+    
+    <% unless user_signed_in? %>
+      <%= form.text_field :name,
+            placeholder: "Seu nome (opcional)",
+            class: "w-40 bg-gray-800 border border-gray-700 text-gray-200 px-3 py-2 rounded-lg" %>
     <% end %>
-  <% else %>
-    <p class="text-gray-400 mb-4">Faça login para comentar.</p>
+
+    <%= form.text_area :content,
+          placeholder: "Escreva um comentário...",
+          rows: 2,
+          required: true,
+          class: "flex-1 bg-gray-800 border border-gray-700 text-gray-200 px-3 py-2 rounded-lg resize-none" %>
+
+    <%= form.submit "Comentar",
+          class: "bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 py-2 rounded-lg transition" %>
   <% end %>
 
-  <% if @movie.comments.any? %>
-    <% @movie.comments.each do |comment| %>
-      <% author =
-           comment.user&.name.presence ||
-           (comment.user&.email&.split("@")&.first) ||
-           comment.name.presence ||
-           "Anônimo" %>
-
-      <div class="bg-gray-800 text-gray-200 p-3 rounded-md mb-3 border border-gray-700">
-        <p><%= comment.content %></p>
-        <span class="text-xs text-gray-500">por <%= author %></span>
-      </div>
-    <% end %>
-  <% else %>
-    <p class="text-gray-400 text-sm">Nenhum comentário ainda... Seja o primeiro! ✨</p>
+  <% @movie.comments.order(created_at: :desc).each do |comment| %>
+    <div class="bg-gray-800 border border-gray-700 p-3 rounded-lg mb-4">
+      <p class="text-gray-200"><%= comment.content %></p>
+      <span class="text-xs text-gray-400">
+        por <%= comment.user&.name || comment.name.presence || "Anônimo" %> ·
+        <%= time_ago_in_words(comment.created_at) %> atrás
+      </span>
+    </div>
   <% end %>
 </div>

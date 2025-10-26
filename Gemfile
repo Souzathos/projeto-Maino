@@ -77,3 +77,11 @@ end
 gem "devise", "~> 4.9"
 
 gem "kaminari", "~> 1.2"
+
+gem "faraday", "~> 2.14"
+
+gem "json", "~> 2.15"
+
+gem "sidekiq"
+
+gem "redis"

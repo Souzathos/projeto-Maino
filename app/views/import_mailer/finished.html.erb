@@ -1,0 +1,13 @@
+<h2>Status da importação</h2>
+
+<p><strong>Arquivo:</strong> <%= @import.original_filename %></p>
+<p><strong>Status:</strong> <%= @import.status.humanize %></p>
+<p><strong>Processadas:</strong> <%= @import.processed_rows %> de <%= @import.total_rows %></p>
+<p><strong>Erros:</strong> <%= @import.error_count %></p>
+
+<% if @import.error_log.present? %>
+  <p><strong>Logs:</strong></p>
+  <pre style="white-space: pre-wrap;"><%= @import.error_log %></pre>
+<% end %>
+
+<p><%= link_to "Ver no sistema", import_url(@import) %></p>

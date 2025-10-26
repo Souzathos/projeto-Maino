@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_25_204822) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_26_045526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_204822) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "imports", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "error_count", default: 0, null: false
+    t.text "error_log"
+    t.string "original_filename"
+    t.integer "processed_rows", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.integer "total_rows", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_imports_on_user_id"
+  end
+
   create_table "movie_categories", force: :cascade do |t|
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
@@ -87,6 +100,31 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_204822) do
     t.bigint "user_id", null: false
     t.integer "year"
     t.index ["user_id"], name: "index_movies_on_user_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "movie_id", null: false
+    t.integer "rating"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["movie_id"], name: "index_reviews_on_movie_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "movie_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_taggings_on_movie_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -109,7 +147,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_204822) do
   add_foreign_key "categorizations", "movies"
   add_foreign_key "comments", "movies"
   add_foreign_key "comments", "users"
+  add_foreign_key "imports", "users"
   add_foreign_key "movie_categories", "categories"
   add_foreign_key "movie_categories", "movies"
   add_foreign_key "movies", "users"
+  add_foreign_key "reviews", "movies"
+  add_foreign_key "reviews", "users"
+  add_foreign_key "taggings", "movies"
+  add_foreign_key "taggings", "tags"
 end

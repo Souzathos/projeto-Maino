@@ -1,68 +1,74 @@
-<div class="max-w-3xl mx-auto mt-12 bg-gray-900 border border-gray-800 p-10 rounded-3xl shadow-2xl">
+<div class="max-w-4xl mx-auto bg-gray-900 border border-gray-800 p-10 rounded-3xl shadow-2xl mt-10">
+  
   <h1 class="text-3xl font-bold text-yellow-400 mb-10 flex items-center gap-3">
     ✏️ Editar Filme
   </h1>
 
   <%= form_with(model: @movie, local: true, class: "space-y-8") do |form| %>
-
-    <!-- Campo Título -->
+    
     <div class="flex flex-col gap-2">
       <%= form.label :title, "Título", class: "text-sm font-semibold text-gray-300" %>
-      <%= form.text_field :title, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      <%= form.text_field :title, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
     </div>
 
-    <!-- Campo Sinopse -->
     <div class="flex flex-col gap-2">
       <%= form.label :synopsis, "Sinopse", class: "text-sm font-semibold text-gray-300" %>
-      <%= form.text_area :synopsis, rows: 4, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      <%= form.text_area :synopsis, rows: 4, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
     </div>
 
-    <!-- Linha com Ano, Duração e Diretor -->
     <div class="grid md:grid-cols-3 gap-6">
       <div class="flex flex-col gap-2">
-        <%= form.label :year, "Ano de lançamento", class: "text-sm font-semibold text-gray-300" %>
-        <%= form.number_field :year, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+        <%= form.label :year, "Ano", class: "text-sm font-semibold text-gray-300" %>
+        <%= form.number_field :year, min: 1888, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
       </div>
 
       <div class="flex flex-col gap-2">
         <%= form.label :duration, "Duração (min)", class: "text-sm font-semibold text-gray-300" %>
-        <%= form.number_field :duration, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+        <%= form.number_field :duration, min: 1, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
       </div>
 
       <div class="flex flex-col gap-2">
         <%= form.label :director, "Diretor", class: "text-sm font-semibold text-gray-300" %>
-        <%= form.text_field :director, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+        <%= form.text_field :director, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
       </div>
     </div>
 
-    <!-- Categorias -->
     <div class="flex flex-col gap-2">
-      <%= form.label :category_names, "Categorias (separe por vírgula)", class: "text-sm font-semibold text-gray-300" %>
-      <%= form.text_field :category_names, value: @movie.categories.map(&:name).join(", "),
-          class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm" %>
+      <%= form.label :category_names, "Categorias (vírgula)", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.text_field :category_names, value: @movie.categories.map(&:name).join(", "), class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
     </div>
 
-    <!-- Poster -->
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-2">
+      <%= form.label :tag_names, "Tags (separe por vírgula)", class: "text-sm font-semibold text-gray-300" %>
+      <%= form.text_field :tag_names, value: @movie.tags.map(&:name).join(", "), class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100" %>
+    </div>
+
+    <div class="flex flex-col gap-3 mt-4">
       <%= form.label :poster, "Poster do Filme", class: "text-sm font-semibold text-gray-300" %>
-      <%= form.file_field :poster, accept: "image/*",
-          class: "text-white bg-gray-800 px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" %>
+      <%= form.file_field :poster, class: "w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 cursor-pointer" %>
 
       <% if @movie.poster.attached? %>
-        <p class="text-sm text-gray-400">Poster atual:</p>
-        <%= image_tag @movie.poster, class: "w-40 rounded-lg shadow-md mb-2" %>
+        <div class="flex items-center gap-4 mt-2">
+          <%= image_tag @movie.poster, class: "w-20 h-20 rounded-md border border-gray-600 object-cover shadow" %>
+        </div>
       <% end %>
     </div>
 
-    <!-- Botões -->
-    <div class="flex justify-between pt-4">
-      <%= link_to "Cancelar",
-          movie_path(@movie),
-          class: "bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition" %>
+    <% if @movie.poster.attached? %>
+      <div class="flex justify-end pt-4 border-t border-gray-700 mt-8">
+        <label class="flex items-center gap-2 text-red-500 hover:text-red-400 cursor-pointer font-medium text-base transition-colors duration-200">
+          <%= form.check_box :remove_poster, class: "form-checkbox h-5 w-5 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 cursor-pointer" %>
+          Remover poster atual
+        </label>
+      </div>
+    <% end %>
+
+    <div class="flex justify-between mt-10">
+      <%= link_to "Cancelar", movie_path(@movie), class: "px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors duration-200" %>
 
       <%= form.submit "Salvar Alterações",
-          class: "bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold py-3 px-6 rounded-lg shadow-md transition" %>
+          class: "px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-lg shadow-md transition-colors duration-200" %>
     </div>
 
-  <% end %>
+  <% end %> <!-- ✅ FECHAMENTO CORRETO DO FORM -->
 </div>
