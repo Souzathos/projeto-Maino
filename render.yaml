@@ -1,21 +1,21 @@
-databases:
-- name: movieCatalog             # Nome do recurso E nome da database (Postgres)
-  plan: free                     # <-- ADICIONADO: Define explicitamente o plano gratuito.
-  # A chave 'user' foi removida, o Render irá gerar um usuário seguro.
-
 services:
-- type: web
-  name: movie-catalog-web
-  env: ruby
-  plan: starter                  # Já está configurado corretamente para o plano gratuito (Web Service)
-  buildCommand: bash ./bin/render-build.sh
-  startCommand: bundle exec puma -C config/puma.rb
-  envVars:
-  - key: DATABASE_URL
-    fromDatabase:
-      name: movieCatalog
-      property: connectionString
-
-  - key: RAILS_MASTER_KEY
-    # Chave 'value' removida. Defina o valor no Dashboard.
-    sync: false
+  - type: web
+    name: movie-catalog-web
+    env: ruby
+    plan: starter
+    buildCommand: |
+      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      apt-get install -y nodejs
+      npm install --global yarn
+      yarn install --check-files
+      bundle install
+      bundle exec rake assets:precompile
+      bundle exec rake db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: movieCatalog
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
