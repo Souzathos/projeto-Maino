@@ -9,7 +9,7 @@ services:
 
     buildCommand: bash ./bin/render-build.sh
 
-    startCommand: bundle exec rails server -p $PORT
+    startCommand: rails server -p $PORT
     
     envVars:
       - key: DATABASE_URL
