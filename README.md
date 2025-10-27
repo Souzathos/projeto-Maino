@@ -54,7 +54,6 @@
 
 ## 📌 Como rodar o projeto
 
-```bash
 # Instalar dependências
 bundle install
 yarn install
@@ -71,7 +70,6 @@ rails db:seed   # opcional
 
 # 3️⃣ Inicie o servidor
 bin/dev
-
 📥 Importando CSV
 
 Acesse a Home
