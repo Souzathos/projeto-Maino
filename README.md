@@ -1,119 +1,65 @@
-🎬 Movie Catalog
+# 🎬 Movie Catalog
 
-📌 Sistema completo de catálogo de filmes com avaliações ⭐, comentários e organização por categorias e tags.
-🔐 Controle de acesso com autenticação Devise.
+> Um sistema completo de catálogo de filmes com autenticação, avaliações, comentários, categorias, tags e importação em CSV.
 
-✅ Funcionalidades
-🎞 Gerenciamento de Filmes
+---
 
-Criar, visualizar, editar e excluir filmes
+## ✅ Funcionalidades
 
-Upload de poster da obra
+### 🎞 Gerenciamento de Filmes
+- CRUD completo de filmes
+- Upload de poster (Active Storage)
+- Sinopse, ano, duração, diretor e muito mais
+- Lista com paginação (Kaminari)
 
-Sinopse, duração, diretor, ano e muito mais
+### 🏷 Categorias e Tags
+- Filmes podem ter múltiplas categorias
+- Organização por tags (#terror, #clássico)
+- Busca por título, diretor, ano, categorias **e** tags
 
-Listagem com paginação
+### ⭐ Avaliações e Comentários
+- Usuários podem avaliar com estrelas ⭐
+- Comentários visíveis em cada filme
+- Exibição da nota média + número de avaliações
 
-🏷 Categorias e Tags
+### 🔐 Autenticação (Devise)
+- Cadastro/Login seguro
+- Apenas o dono do filme pode editar/excluir
+- Visitantes apenas visualizam conteúdo
 
-Adicionar múltiplas categorias por filme
+### 📂 Importação de CSV
+- Upload de arquivo CSV com múltiplos filmes
+- Popula automaticamente categorias e tags
 
-Organizar filmes com tags (ex: #ação, #terror)
+> Obs.: A notificação por e-mail da importação foi removida para evitar dependências externas.
 
-Busca por título, diretor, ano, categorias e tags
+---
 
-⭐ Avaliações e Comentários
+## 🛠 Tecnologias Utilizadas
 
-Usuários podem avaliar com estrelas
+| Categoria | Tecnologia |
+|----------|------------|
+| Linguagem | Ruby 3.3 |
+| Framework | Ruby on Rails 8 |
+| Banco de Dados | PostgreSQL |
+| Autenticação | Devise |
+| Estilização | Tailwind CSS |
+| Upload de Arquivos | Active Storage |
+| Paginação | Kaminari |
 
-Comentários exclusivos para usuários autenticados
+---
 
-Exibição do rating médio + quantidade de avaliações
+## 🚀 Rodando o Projeto Localmente
 
-🧑‍💻 Autenticação & Autorização (Devise)
-
-Cadastro e login de usuários
-
-Apenas o dono do filme pode editar/excluir
-
-Visitantes podem visualizar
-
-📂 Importação de CSV
-
-Enviar arquivo CSV para importar vários filmes de uma vez
-
-Suporta colunas:
-
-title, synopsis, year, duration, director, categories, tags
-
-Importa categorias e tags automaticamente
-
-Obs: Notificação por e-mail da importação foi removida para evitar dependências externas — mas o recurso está pronto para ser reativado!
-
-🖥 Tecnologias Utilizadas
-Categoria	Tecnologia
-Linguagem	Ruby 3.3
-Framework	Rails 8
-Banco de dados	PostgreSQL
-Autenticação	Devise
-Uploads	Active Storage
-Estilização	Tailwind CSS
-Paginação	Kaminari
-📌 Como rodar o projeto
-# Instalar dependências
+```bash
+# 1️⃣ Instale as dependências
 bundle install
 yarn install
 
-# Configurar banco
+# 2️⃣ Configure o banco de dados
 rails db:create
 rails db:migrate
 rails db:seed   # opcional
 
-# Rodar o servidor
+# 3️⃣ Inicie o servidor
 bin/dev
-
-
-Acesse no navegador:
-👉 http://localhost:3000
-
-📥 Importando CSV
-
-1️⃣ Acesse a Home
-2️⃣ Faça upload do arquivo CSV no campo “Importar CSV”
-3️⃣ Filmes serão criados automaticamente ✅
-
-📌 Exemplo de CSV:
-
-title,synopsis,year,duration,director,categories,tags
-O Exorcista,Menina possuída,1973,132,William Friedkin,Terror,"terror, classico"
-Rocky,Boxeador busca superação,1976,120,John G. Avildsen,Drama,"esporte, luta"
-
-🔒 Regras de Permissão
-Ação	Visitante	Usuário logado	Dono do filme
-Ver filmes	✅	✅	✅
-Criar	❌	✅	✅
-Editar	❌	❌	✅
-Excluir	❌	❌	✅
-Comentar	❌	✅	✅
-Avaliar	❌	✅	✅
-✅ Diferenciais Aplicados
-
-✔ Sistema completo de rating com ⭐ dinâmicas
-✔ Busca avançada
-✔ UI moderna com Tailwind
-✔ CSV importável com categorias e tags
-✔ Paginação responsiva
-✔ Código organizado e desacoplado
-
-📌 Melhorias Futuras
-
-Reativar envio de e-mail informando conclusão da importação
-
-Deploy em servidor na nuvem
-
-Adição de favoritos e JSON API
-
-👨‍💻 Desenvolvedor
-
-Athos Felipe Nascimento de Souza
-Fullstack Developer 🚀
