@@ -19,4 +19,15 @@ test:
 
 production:
   <<: *default
+  # Usa a DATABASE_URL fornecida pelo Render
+  url: <%= ENV["DATABASE_URL"] %>
+
+# ===============================================
+# ✅ NOVO: Configuração para Action Cable (WebSockets)
+# O Rails precisa disso para iniciar o servidor em produção.
+# ===============================================
+cable:
+  # Usar o adaptador 'postgresql' é a forma mais simples,
+  # pois reutiliza a mesma conexão do DATABASE_URL.
+  adapter: postgresql
   url: <%= ENV["DATABASE_URL"] %>
