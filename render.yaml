@@ -6,7 +6,10 @@ services:
     name: movie-catalog-web
     env: ruby
     plan: starter
+
     buildCommand: bash ./bin/render-build.sh
+
+    startCommand: rails server -p $PORT
     
     envVars:
       - key: DATABASE_URL
