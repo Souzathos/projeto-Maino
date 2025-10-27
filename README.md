@@ -84,14 +84,19 @@ O Exorcista,Menina possuída,1973,132,William Friedkin,Terror,"terror, classico"
 Rocky,Boxeador busca superação,1976,120,John G. Avildsen,Drama,"esporte, luta"
 
 🔒 Regras de Permissão
-Ação	Visitante	Usuário logado	Dono do filme
-Ver filmes	✅	✅	✅
-Criar	❌	✅	✅
-Editar	❌	❌	✅
-Excluir	❌	❌	✅
-Comentar	❌	✅	✅
-Avaliar	❌	✅	✅
+|----------|------------|
+| Ação | Visitante | Usuário logado | Dono do filme|
+| Ver filmes | ✅ | ✅	| ✅|
+| Criar | ❌ | ✅	| ✅|
+| Editar | ❌ | ❌| ✅|
+| Excluir | ❌ | ❌ | ✅|
+| Comentar | ✅ | ✅	| ✅|
+| Avaliar | ❌ | ✅ | ✅|
+
 ✅ Diferenciais Aplicados
+
+
+
 
 Sistema completo de rating com ⭐ dinâmicas
 
