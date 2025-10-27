@@ -1,28 +1,22 @@
 default: &default
   adapter: postgresql
-  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
   <<: *default
-  database: movie_catalog_development
-  username: movie_catalog
-  password: 123456
-  host: localhost
+  adapter: sqlite3
+  database: db/development.sqlite3
 
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: movie_catalog_test
-  username: movie_catalog
-  password: 123456
-  host: localhost
+  database: db/test.sqlite3
 
 production:
-  # ATENÇÃO: Removemos "<<: *default" para evitar herdar configurações locais.
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  url: <%= ENV["DATABASE_URL"] %>
-
-cable:
-  adapter: postgresql 
-  url: <%= ENV["DATABASE_URL"] %>
+  <<: *default
+  database: event_tracker_production
+  username: event_tracker
+  password: <%= ENV['EVENT_TRACKER_DATABASE_PASSWORD'] %>
