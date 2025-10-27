@@ -1,65 +1,121 @@
 # 🎬 Movie Catalog
 
-> Um sistema completo de catálogo de filmes com autenticação, avaliações, comentários, categorias, tags e importação em CSV.
+📌 Sistema completo de catálogo de filmes com avaliações ⭐, comentários e organização por categorias e tags.  
+🔐 Controle de acesso com autenticação Devise.
 
 ---
 
 ## ✅ Funcionalidades
 
 ### 🎞 Gerenciamento de Filmes
-- CRUD completo de filmes
-- Upload de poster (Active Storage)
-- Sinopse, ano, duração, diretor e muito mais
-- Lista com paginação (Kaminari)
+- Criar, visualizar, editar e excluir filmes
+- Upload de poster da obra
+- Sinopse, duração, diretor, ano e muito mais
+- Listagem com paginação
 
 ### 🏷 Categorias e Tags
-- Filmes podem ter múltiplas categorias
-- Organização por tags (#terror, #clássico)
-- Busca por título, diretor, ano, categorias **e** tags
+- Adicionar múltiplas categorias por filme
+- Organizar filmes com tags (ex: #ação, #terror)
+- Busca por título, diretor, ano, categorias e tags
 
 ### ⭐ Avaliações e Comentários
-- Usuários podem avaliar com estrelas ⭐
-- Comentários visíveis em cada filme
-- Exibição da nota média + número de avaliações
+- Usuários podem avaliar com estrelas
+- Comentários exclusivos para usuários autenticados
+- Exibição do rating médio + quantidade de avaliações
 
-### 🔐 Autenticação (Devise)
-- Cadastro/Login seguro
+### 🧑‍💻 Autenticação & Autorização (Devise)
+- Cadastro e login de usuários
 - Apenas o dono do filme pode editar/excluir
-- Visitantes apenas visualizam conteúdo
+- Visitantes podem visualizar
 
 ### 📂 Importação de CSV
-- Upload de arquivo CSV com múltiplos filmes
-- Popula automaticamente categorias e tags
+- Enviar arquivo CSV para importar vários filmes de uma vez
+- Suporta colunas:
+  - `title`, `synopsis`, `year`, `duration`, `director`, `categories`, `tags`
+- Importa categorias e tags automaticamente
 
-> Obs.: A notificação por e-mail da importação foi removida para evitar dependências externas.
+> Obs: Notificação por e-mail da importação foi removida para evitar dependências externas — mas o recurso está pronto para ser reativado.
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 🖥 Tecnologias Utilizadas
 
 | Categoria | Tecnologia |
 |----------|------------|
 | Linguagem | Ruby 3.3 |
-| Framework | Ruby on Rails 8 |
-| Banco de Dados | PostgreSQL |
+| Framework | Rails 8 |
+| Banco de dados | PostgreSQL |
 | Autenticação | Devise |
+| Uploads | Active Storage |
 | Estilização | Tailwind CSS |
-| Upload de Arquivos | Active Storage |
 | Paginação | Kaminari |
 
 ---
 
-## 🚀 Rodando o Projeto Localmente
+## 📌 Como rodar o projeto
 
 ```bash
-# 1️⃣ Instale as dependências
+# Instalar dependências
 bundle install
 yarn install
 
-# 2️⃣ Configure o banco de dados
+# Configurar banco
 rails db:create
 rails db:migrate
 rails db:seed   # opcional
 
+# Rodar o servidor
+bin/dev
+
+rails db:seed   # opcional
+
 # 3️⃣ Inicie o servidor
 bin/dev
+
+📥 Importando CSV
+
+Acesse a Home
+
+Faça upload do arquivo CSV no campo “Importar CSV”
+
+Filmes serão criados automaticamente ✅
+
+📌 Exemplo de CSV:
+title,synopsis,year,duration,director,categories,tags
+O Exorcista,Menina possuída,1973,132,William Friedkin,Terror,"terror, classico"
+Rocky,Boxeador busca superação,1976,120,John G. Avildsen,Drama,"esporte, luta"
+
+🔒 Regras de Permissão
+Ação	Visitante	Usuário logado	Dono do filme
+Ver filmes	✅	✅	✅
+Criar	❌	✅	✅
+Editar	❌	❌	✅
+Excluir	❌	❌	✅
+Comentar	❌	✅	✅
+Avaliar	❌	✅	✅
+✅ Diferenciais Aplicados
+
+Sistema completo de rating com ⭐ dinâmicas
+
+Busca avançada
+
+UI moderna com Tailwind
+
+CSV importável com categorias e tags
+
+Paginação responsiva
+
+Código organizado e desacoplado
+
+📌 Melhorias Futuras
+
+Reativar envio de e-mail informando conclusão da importação
+
+Deploy em servidor na nuvem
+
+Adição de favoritos e JSON API
+
+👨‍💻 Desenvolvedor
+
+Athos Felipe Nascimento de Souza
+Fullstack Developer 🚀
