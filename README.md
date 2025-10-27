@@ -67,7 +67,7 @@ Rocky,Boxeador busca superação,1976,120,John G. Avildsen,Drama,"esporte, luta"
 
 ## 🔒 Regras de Permissão
 
-Visitantes → apenas visualizam  
+Visitantes → podem visualizar e comentar
 Usuários → podem criar, comentar e avaliar  
 Dono → pode criar, editar, excluir, comentar e avaliar  
 
