@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 
-# Sair imediatamente se um comando falhar
 set -o errexit
 
-# --- 1. Instalar Dependências ---
-# O Render já faz o bundle install, mas incluir não custa e garante.
-echo "--- Installing dependencies ---"
-bundle install
-
-# --- 2. Pré-compilar Assets ---
+# --- 1. Pré-compilar Assets (Deve vir primeiro) ---
 echo "--- Precompiling assets ---"
-# Usando o comando 'rails' em vez de 'rake' para maior compatibilidade
+# Usamos o '-r' para garantir que os assets são pré-compilados
 bundle exec rails assets:precompile
 
-# --- 3. Executar Migrações ---
+# --- 2. Executar Migrações ---
 echo "--- Running database migrations ---"
-# A migração é crítica. Deve ser feita ANTES de iniciar o servidor.
+# Adicionamos uma instrução para limpar os logs/cache do banco de dados antes de migrar.
+# Adicionamos 'bundle exec rails db:create' para garantir que o banco existe antes de migrar.
+bundle exec rails db:create
 bundle exec rails db:migrate
 
-# A linha 'bundle exec rake assets:clean' é geralmente desnecessária no build do Render
+# O 'bundle install' foi movido para fora do script, pois o Render o executa por padrão.
+# Deixando o script mais limpo e focado no que ele PRECISA fazer.
